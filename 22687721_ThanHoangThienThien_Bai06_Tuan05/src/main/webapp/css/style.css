@@ -1,0 +1,139 @@
+/* style.css */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f0f4f8;
+    color: #333;
+}
+
+header {
+    background: linear-gradient(90deg, #4caf50, #2196f3);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.container {
+    display: flex;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+.sidebar {
+    width: 220px;
+    background: #e0f7fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.sidebar h3 {
+    margin-top: 0;
+    color: #00796b;
+}
+
+.sidebar a {
+    display: block;
+    padding: 8px 0;
+    color: #00796b;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.sidebar a:hover {
+    color: #004d40;
+}
+
+.main-content {
+    flex: 1;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background: linear-gradient(90deg, #4caf50, #81c784);
+    color: white;
+}
+
+tr:nth-child(even) {
+    background: #f6f6f6;
+}
+
+tr:hover {
+    background: linear-gradient(90deg, #c8e6c9, #e8f5e9);
+}
+
+a.btn {
+    display: inline-block;
+    padding: 8px 15px;
+    margin: 5px 0;
+    background: linear-gradient(90deg, #4caf50, #81c784);
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+a.btn:hover {
+    background: linear-gradient(90deg, #388e3c, #66bb6a);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input[type=text], input[type=number], textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 6px 0 12px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+input[type=submit] {
+    background: linear-gradient(90deg, #4caf50, #81c784);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+input[type=submit]:hover {
+    background: linear-gradient(90deg, #388e3c, #66bb6a);
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}
