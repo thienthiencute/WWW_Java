@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .product {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .product h3 {
+            margin: 0;
+            color: #2a7;
+        }
+
+        .comments {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+
+        .comment {
+            border-left: 3px solid #2a7;
+            margin-bottom: 8px;
+            padding-left: 10px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+<h1>List Product</h1>
+
+<div th:each="product : ${products}" class="product">
+    <a th:href="@{'/product/' + ${product.id}}">
+        <input type="hidden" th:value="${product.id}" th:name="productId" />
+        <h2 th:text="${product.name}">Product Name</h2>
+    </a>
+
+    <p><strong>Price:</strong> <span th:text="${product.price}">0</span> USD</p>
+
+    <div class="comments">
+        <h3>Comments:</h3>
+        <div th:if="${#lists.isEmpty(product.comments)}">
+            <p><em>Nothing</em></p>
+        </div>
+        <div th:each="c : ${product.comments}" class="comment">
+            <span th:text="${c.text}">Comment Content</span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
