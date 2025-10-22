@@ -2,6 +2,10 @@ package fit.iuh.thanhoangthienthien_tuan07.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
 
 @Entity
@@ -9,18 +13,21 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@ToString
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String date;
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Calendar date;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<OrderLine> orderLines;
 }

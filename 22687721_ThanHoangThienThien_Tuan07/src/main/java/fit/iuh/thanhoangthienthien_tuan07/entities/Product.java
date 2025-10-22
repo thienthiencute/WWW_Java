@@ -6,11 +6,11 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
-@Table(name = "products")
+@Table(name = "product")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@ToString
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,13 +22,19 @@ public class Product {
 
     private Boolean inStock;
 
+    private String image;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<OrderLine> orderLines;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Comment> comments;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+
 }

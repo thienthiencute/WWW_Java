@@ -5,11 +5,11 @@ import lombok.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "orderlines")
+@Table(name = "orderline")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@ToString
 public class OrderLine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -4,34 +4,34 @@ import fit.iuh.thanhoangthienthien_tuan07.entities.Comment;
 import fit.iuh.thanhoangthienthien_tuan07.entities.Product;
 import fit.iuh.thanhoangthienthien_tuan07.services.CommentService;
 import fit.iuh.thanhoangthienthien_tuan07.services.ProductService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequiredArgsConstructor
-@RequestMapping("/comments")
+@RequestMapping("/products/{productId}/comments")
 public class CommentController {
-    private final CommentService commentService;
-    private final ProductService productService;
+    @Autowired
+    private ProductService productService;
+    @Autowired
+    private CommentService commentService;
 
+    // Hiển thị form thêm comment
+    @GetMapping("/add")
+    public String showCommentForm(@PathVariable Integer productId, Model model) {
+        Product product = productService.getProductById(productId);
+        model.addAttribute("product", product);
+        model.addAttribute("comment", new Comment());
+        return "product/comment-form";
+    }
+
+    // Xử lý thêm comment
     @PostMapping("/add")
-    public String addComment(@RequestParam Integer productId, @RequestParam String text) {
-        Product product = productService.findById(productId);
-        if (product != null) {
-            Comment comment = Comment.builder()
-                    .text(text)
-                    .product(product)
-                    .build();
-            commentService.save(comment);
-        }
-        return "redirect:/product/" + productId;
+    public String addComment(@PathVariable Integer productId, @ModelAttribute Comment comment) {
+        Product product = productService.getProductById(productId);
+        comment.setProduct(product);
+        commentService.saveComment(comment);
+        return "redirect:/products/detail/" + productId;
     }
-
-    @GetMapping("/delete/{id}")
-    public String deleteComment(@PathVariable Integer id, @RequestParam Integer productId) {
-        commentService.deleteById(id);
-        return "redirect:/product/" + productId;
-    }
-
 }

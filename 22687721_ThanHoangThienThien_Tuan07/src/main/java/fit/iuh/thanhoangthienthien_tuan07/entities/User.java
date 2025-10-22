@@ -1,26 +1,22 @@
 package fit.iuh.thanhoangthienthien_tuan07.entities;
-
-
-
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.List;
 
 @Entity
-@Table(name = "category")
+@Table(name = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-public class Category {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String name;
+    @Column(unique = true, nullable = false)
+    private String username;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<Product> products;
+    @Column(nullable = false)
+    private String password;
+
+    private String role;
 }
-
