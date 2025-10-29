@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết sản phẩm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            border-radius: 12px;
+        }
+        .product-img {
+            width: 100%;
+            max-width: 350px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+        }
+        .btn-custom {
+            border-radius: 30px;
+            padding: 8px 18px;
+        }
+    </style>
+</head>
+<body>
+<div class="container py-5">
+    <div class="card shadow-lg p-4">
+        <div class="row g-4 align-items-center">
+            <!-- Hình sản phẩm -->
+            <div class="col-md-5 text-center">
+                <img th:src="${product.image != null ? '/uploads/' + product.image : '/uploads/default-image.png'}"
+                     alt="Product Image" class="product-img">
+            </div>
+
+            <!-- Thông tin sản phẩm -->
+            <div class="col-md-7">
+                <h2 class="text-primary mb-3" th:text="${product.name}">Tên sản phẩm</h2>
+                <h4 class="text-success mb-3">
+                    Giá: <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' ₫'">0 ₫</span>
+                </h4>
+                <p>
+                    <strong>Mã sản phẩm:</strong> <span th:text="${product.id}"></span><br>
+                    <strong>Tình trạng:</strong>
+                    <span th:text="${product.inStock ? 'Còn hàng' : 'Hết hàng'}"
+                          th:classappend="${product.inStock} ? 'text-success' : 'text-danger'"></span>
+                </p>
+
+                <div class="mt-4">
+                    <a th:href="@{/products}" class="btn btn-secondary btn-custom me-2">← Danh sách sản phẩm</a>
+                    <a th:href="@{/home}" class="btn btn-outline-primary btn-custom">🏠 Trang chủ</a>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <!-- Bình luận sản phẩm -->
+        <div>
+            <h5 class="text-dark mb-3">💬 Bình luận sản phẩm:</h5>
+            <ul class="list-group mb-3" th:if="${product.comments != null and !product.comments.isEmpty()}">
+                <li class="list-group-item" th:each="c : ${product.comments}" th:text="${c.text}"></li>
+            </ul>
+            <p th:if="${product.comments == null or product.comments.isEmpty()}" class="text-muted fst-italic">
+                Chưa có bình luận nào cho sản phẩm này.
+            </p>
+
+            <a th:href="@{/products/{id}/comments/add(id=${product.id})}" class="btn btn-primary btn-sm">+ Thêm bình luận</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #74b9ff, #a29bfe);
+            font-family: "Segoe UI", Arial, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+        }
+
+        header h2 {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .logout-btn {
+            background: #fff;
+            color: #0d6efd;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.25s ease;
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            background: #f1f1f1;
+            transform: translateY(-2px);
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-weight: 700;
+            margin: 40px 0 10px;
+        }
+
+        .dashboard-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 2rem 0 4rem;
+        }
+
+        .card {
+            width: 260px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .card i {
+            font-size: 60px;
+            margin-top: 30px;
+            color: #ffeaa7;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-top: 15px;
+        }
+
+        .card-text {
+            font-size: 0.95rem;
+            color: #f8f9fa;
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+
+        .card a {
+            display: block;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 0 0 20px 20px;
+            padding: 12px;
+            color: #fff;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .card a:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h2>🏠 Trang chủ</h2>
+    <a th:href="@{/logout}" class="logout-btn">Đăng xuất</a>
+</header>
+
+
+
+<div class="dashboard-row">
+
+    <!-- ✅ Products -->
+    <div class="card" th:onclick="'window.location.href=\'' + @{/products} + '\''">
+        <i class="bi bi-box-seam"></i>
+        <div class="card-body">
+            <h5 class="card-title">Sản phẩm</h5>
+            <p class="card-text">Xem và quản lý tất cả danh sách sản phẩm.</p>
+        </div>
+        <a th:href="@{/products}">Sản phẩm →</a>
+
+    </div>
+
+    <!-- ✅ Orders -->
+    <div class="card" th:onclick="'window.location.href=\'' + @{/orders} + '\''">
+        <i class="bi bi-receipt"></i>
+        <div class="card-body">
+            <h5 class="card-title">Đơn hàng</h5>
+            <p class="card-text">Theo dõi và quản lý tất cả đơn hàng của khách hàng..</p>
+        </div>
+        <a th:href="@{/orders}">Đơn hàng →</a>
+    </div>
+
+    <!-- ✅ Customers -->
+    <div class="card" th:onclick="'window.location.href=\'' + @{/customers} + '\''">
+        <i class="bi bi-people"></i>
+        <div class="card-body">
+            <h5 class="card-title">Khách hàng</h5>
+            <p class="card-text">Xem và quản lý thông tin khách hàng.</p>
+        </div>
+        <a th:href="@{/customers}">Khách hàng →</a>
+    </div>
+
+    <!-- ✅ Categories -->
+    <div class="card" onclick="window.location.href='/categories'">
+        <i class="bi bi-tags"></i>
+        <div class="card-body">
+            <h5 class="card-title">Danh mục sản phẩm</h5>
+            <p class="card-text">Tổ chức và phân loại danh mục sản phẩm.</p>
+        </div>
+        <a href="/categories">Danh mục sản phẩm →</a>
+    </div>
+
+
+
+</div>
+
+</body>
+</html>

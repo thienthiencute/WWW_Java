@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách sản phẩm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+
+    <style>
+        /* ======= MÀU NỀN & FONT ======= */
+        body {
+            background: linear-gradient(135deg, #74b9ff, #a29bfe);
+            min-height: 100vh;
+            font-family: "Poppins", sans-serif;
+        }
+
+        /* ======= THANH NAV ======= */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(6px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: #5a4fcf !important;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-outline-primary {
+            border-color: #5a4fcf;
+            color: #5a4fcf;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #5a4fcf;
+            color: #fff;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            background: #e63946;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 11px;
+            padding: 3px 6px;
+        }
+
+        /* ======= HEADER ======= */
+        h2 {
+            color: #fff;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ======= FORM TÌM KIẾM ======= */
+        .search-box input {
+            border-radius: 25px 0 0 25px;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .search-box button {
+            border-radius: 0 25px 25px 0;
+            background-color: #5a4fcf;
+            color: #fff;
+            border: none;
+            padding: 0 20px;
+        }
+
+        .search-box button:hover {
+            background-color: #4a3fc7;
+        }
+
+        /* ======= CARD SẢN PHẨM ======= */
+        .product-card {
+            border: none;
+            border-radius: 20px;
+            background: #fff;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            height: 230px;
+            object-fit: cover;
+            background: #f0f0f0;
+        }
+
+        .price {
+            color: #2ecc71;
+            font-weight: 600;
+            font-size: 1.3rem;
+        }
+
+        .btn-success {
+            background-color: #4cd964;
+            border: none;
+        }
+
+        .btn-success:hover {
+            background-color: #37c754;
+        }
+
+        .btn-outline-info {
+            border-color: #5a4fcf;
+            color: #5a4fcf;
+        }
+
+        .btn-outline-info:hover {
+            background-color: #5a4fcf;
+            color: white;
+        }
+
+        /* ======= ADMIN ACTION ======= */
+        .admin-actions {
+            border-top: 1px solid #eee;
+            margin-top: 10px;
+            padding-top: 10px;
+        }
+
+        /* ======= FOOTER ======= */
+        footer {
+            color: #eee;
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9rem;
+        }
+
+    </style>
+
+
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg sticky-top py-3">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/home}">
+            <i class="fas fa-store"></i> Thin's Shop
+        </a>
+
+        <div class="d-flex align-items-center">
+            <span class="me-3 text-muted" sec:authentication="name">Thiên Thiên</span>
+
+            <a th:href="@{/orders/cart}" class="btn btn-outline-primary position-relative me-3"
+               sec:authorize="hasAnyRole('CUSTOMER','ADMIN')">
+                <i class="fas fa-shopping-cart fa-lg"></i>
+                <span class="cart-badge"
+                      th:if="${cart != null and cart.totalQuantity > 0}"
+                      th:text="${cart.totalQuantity}">0</span>
+            </a>
+
+            <a class="btn btn-success me-2" th:href="@{/products/add}" sec:authorize="hasRole('ADMIN')">
+                <i class="fas fa-plus"></i> Thêm
+            </a>
+
+            <form th:action="@{/logout}" method="post" class="d-inline">
+                <button type="submit" class="btn btn-outline-danger">
+                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+</nav>
+
+<div class="container py-5">
+    <h2><i class="fas fa-box"></i> Danh sách sản phẩm</h2>
+
+    <!-- Tìm kiếm -->
+    <form th:action="@{/products/search}" method="get" class="mb-5 d-flex justify-content-center search-box">
+        <input type="text" name="name" th:value="${keyword}" placeholder="🔍 Tìm sản phẩm..."
+               class="form-control form-control-lg w-50">
+        <button type="submit"><i class="fas fa-search"></i></button>
+    </form>
+
+    <!-- Danh sách sản phẩm -->
+    <div class="row g-4">
+        <div class="col-md-4 col-sm-6" th:each="product : ${products}">
+            <div class="card product-card shadow-sm">
+                <img th:src="${product.image != null ? '/uploads/' + product.image : 'https://via.placeholder.com/400x300?text=No+Image'}"
+                     class="card-img-top product-image"
+                     th:alt="${product.name}">
+
+                <div class="card-body">
+                    <h5 class="card-title text-primary fw-bold" th:text="${product.name}">Tên sản phẩm</h5>
+                    <p class="price" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')} + ' VNĐ'">0 VNĐ</p>
+
+                    <span class="badge"
+                          th:classappend="${product.inStock ? 'bg-success' : 'bg-danger'}"
+                          th:text="${product.inStock ? 'Còn hàng' : 'Hết hàng'}"></span>
+
+                    <div class="d-grid gap-2 mt-3">
+                        <a th:href="@{/products/detail/{id}(id=${product.id})}" class="btn btn-outline-info btn-sm">
+                            <i class="fas fa-eye"></i> Xem chi tiết
+                        </a>
+
+                        <div sec:authorize="hasAnyRole('CUSTOMER','ADMIN')">
+                            <form th:action="@{/orders/cart/add}" method="post" th:if="${product.inStock}">
+                                <input type="hidden" name="productId" th:value="${product.id}"/>
+                                <div class="input-group input-group-sm mb-2">
+                                    <span class="input-group-text">SL</span>
+                                    <input type="number" name="quantity" value="1" min="1" max="99"
+                                           class="form-control" style="max-width: 80px;">
+                                </div>
+                                <button type="submit" class="btn btn-success btn-sm w-100">
+                                    <i class="fas fa-cart-plus"></i> Thêm vào giỏ
+                                </button>
+                            </form>
+                        </div>
+
+                        <button class="btn btn-secondary btn-sm w-100" disabled th:unless="${product.inStock}">
+                            <i class="fas fa-ban"></i> Hết hàng
+                        </button>
+                    </div>
+
+                    <!-- Admin actions -->
+                    <div sec:authorize="hasRole('ADMIN')" class="admin-actions">
+                        <div class="d-flex gap-2">
+                            <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn btn-warning btn-sm flex-fill">
+                                <i class="fas fa-edit"></i> Sửa
+                            </a>
+                            <a th:href="@{/products/delete/{id}(id=${product.id})}"
+                               class="btn btn-danger btn-sm flex-fill"
+                               th:onclick="'return confirm(\'Bạn có chắc muốn xóa sản phẩm này?\')'">
+                                <i class="fas fa-trash"></i> Xóa
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Không có sản phẩm -->
+    <div th:if="${products == null or products.isEmpty()}" class="alert alert-light text-center mt-4">
+        <i class="fas fa-info-circle"></i> Không tìm thấy sản phẩm nào.
+    </div>
+
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

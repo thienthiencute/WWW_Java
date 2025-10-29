@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm / Sửa nhân viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h2 th:text="${employee.empId != null} ? 'Chỉnh sửa nhân viên' : 'Thêm nhân viên mới'"></h2>
+
+    <form th:action="${employee.empId != null} ? @{'/employees/edit/' + ${employee.empId}} : @{/employees/add}"
+          th:object="${employee}" method="post">
+        <!-- Mã NV -->
+        <div class="mb-3">
+            <label for="empId" class="form-label">Mã NV</label>
+            <input type="text" th:field="*{empId}" class="form-control" id="empId"
+                   th:readonly="${employee.empId != null}" required>
+        </div>
+
+        <!-- Tên NV -->
+        <div class="mb-3">
+            <label for="empName" class="form-label">Tên NV</label>
+            <input type="text" th:field="*{empName}" class="form-control" id="empName" required>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" th:field="*{email}" class="form-control" id="email">
+        </div>
+
+        <!-- Tuổi -->
+        <div class="mb-3">
+            <label for="age" class="form-label">Tuổi</label>
+            <input type="number" th:field="*{age}" class="form-control" id="age">
+        </div>
+
+        <!-- Lương -->
+        <div class="mb-3">
+            <label for="salary" class="form-label">Lương</label>
+            <input type="number" step="0.01" th:field="*{salary}" class="form-control" id="salary">
+        </div>
+
+        <!-- Phòng ban -->
+        <div class="mb-3">
+            <label for="department" class="form-label">Phòng ban</label>
+            <select th:field="*{department.deptId}" class="form-select" id="department" required>
+                <option th:each="d : ${departments}" th:value="${d.deptId}" th:text="${d.deptName}"></option>
+            </select>
+        </div>
+
+        <!-- Nút -->
+        <button type="submit" class="btn btn-success">Lưu</button>
+        <a th:href="@{/employees}" class="btn btn-secondary">Hủy</a>
+    </form>
+</div>
+</body>
+</html>
